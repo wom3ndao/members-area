@@ -1,6 +1,6 @@
 import { constants } from "../constants";
 import { ethers } from "ethers";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSigner, useProvider, useAccount } from "wagmi";
 export interface Token {
   id: string;
@@ -15,11 +15,11 @@ const useNfts = () => {
   );
   const provider = useProvider();
   const { address } = useAccount();
-  const hasMinted = nfts?.length > 0;
+  const hasMinted = useMemo(() => nfts?.length > 0, [nfts, address]);
 
   useEffect(() => {
     listTokensOfOwner();
-  }, []);
+  }, [address]);
 
   async function mapUsersNfts() {
     const ids = await contract.connect(provider).balanceOf(address);

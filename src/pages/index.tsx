@@ -4,10 +4,13 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Mint from "../components/Mint";
 import ViewNFT from "../components/ViewNFT";
+import useNfts from "@/hooks/useNfts";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const { hasMinted } = useNfts();
+
   return (
     <>
       <Head>
@@ -41,52 +44,55 @@ export default function Home() {
             </a>
           </div>
         </div>
-
-        <div className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-            unsere NFT Membership
-          </h1>
-          <p className="mt-6 text-lg leading-8 text-white">
-            Das wom3n.NFT ist auf 50 NFTs limitiert. Wenn deine Wallet auf
-            unserer Allowlist steht, kannst du hier dein persönliches NFT
-            minten.
-          </p>
-        </div>
-        <div className="text-center">
-          <ViewNFT />
-        </div>
-        <div className={styles.center}>
-          <Mint />
-        </div>
-
-        <div style={{ marginTop: "13rem" }} className={styles.grid}>
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
+        <div style={{ margin: "6rem", maxWidth: "80%" }}>
+          <div className="text-center">
+            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+              unsere NFT Membership
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-white">
+              Das wom3n.NFT ist auf 50 NFTs limitiert. Wenn deine Wallet auf
+              unserer Allowlist steht, kannst du hier dein persönliches NFT
+              minten.
             </p>
-          </a>
+          </div>
+          {hasMinted && (
+            <div className="text-center">
+              <ViewNFT />
+            </div>
+          )}
+          <div className={styles.center}>
+            <Mint />
+          </div>
 
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
+          <div style={{ marginTop: "7rem" }} className={styles.grid}>
+            <a
+              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+              className={styles.card}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <h2 className={inter.className}>
+                Learn <span>-&gt;</span>
+              </h2>
+              <p className={inter.className}>
+                Learn about Next.js in an interactive course with&nbsp;quizzes!
+              </p>
+            </a>
+
+            <a
+              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+              className={styles.card}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <h2 className={inter.className}>
+                Templates <span>-&gt;</span>
+              </h2>
+              <p className={inter.className}>
+                Discover and deploy boilerplate example Next.js&nbsp;projects.
+              </p>
+            </a>
+          </div>
         </div>
       </main>
     </>
