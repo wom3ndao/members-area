@@ -51,10 +51,10 @@ export default function Mint() {
 
   return (
     <>
-      <div className="bg-white py-24 px-6 sm:py-32 lg:px-8">
+      <div className="bg-white py-24 px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-base font-semibold leading-7 text-black text-center">
-            Deine Wallet:
+            {!isConnected && "Deine Wallet:"}
             <RainbowWidget chainStatus="name" />
           </p>
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-6xl">
