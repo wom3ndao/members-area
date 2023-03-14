@@ -20,41 +20,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            wom3n.DAO&nbsp;
-            <code className={styles.code}>
-              female web3 founders & investors network
-            </code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                src="/logo.png"
-                alt="Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
         <div style={{ margin: "6rem", maxWidth: "80%" }}>
-          <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+          {/* <div className="text-center">
+            <h1 className="text-4xl font-bold tracking-tight text-black sm:text-6xl">
               unsere NFT Membership
             </h1>
-            <p className="mt-6 text-lg leading-8 text-white">
+            <p className="mt-6 text-lg leading-8 text-black">
               Das wom3n.NFT ist auf 50 NFTs limitiert. Wenn deine Wallet auf
               unserer Allowlist steht, kannst du hier dein persönliches NFT
               minten.
             </p>
-          </div>
+          </div> */}
           {hasMinted && (
             <div className="text-center">
               <ViewNFT />
@@ -62,36 +38,6 @@ export default function Home() {
           )}
           <div className={styles.center}>
             <Mint />
-          </div>
-
-          <div style={{ marginTop: "7rem" }} className={styles.grid}>
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              className={styles.card}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <h2 className={inter.className}>
-                Learn <span>-&gt;</span>
-              </h2>
-              <p className={inter.className}>
-                Learn about Next.js in an interactive course with&nbsp;quizzes!
-              </p>
-            </a>
-
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              className={styles.card}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <h2 className={inter.className}>
-                Templates <span>-&gt;</span>
-              </h2>
-              <p className={inter.className}>
-                Discover and deploy boilerplate example Next.js&nbsp;projects.
-              </p>
-            </a>
           </div>
         </div>
       </main>

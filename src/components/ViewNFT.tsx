@@ -8,7 +8,7 @@ export default function ViewNFT() {
     <>
       {nfts?.map((nft: Token) => (
         <>
-          <p className="mt-6 text-lg leading-8 text-white">
+          <p className="mt-6 text-lg leading-8 text-black">
             Glückwunsch, du bist bereits Mitglied!{" "}
           </p>
           <div className="nft-card">
