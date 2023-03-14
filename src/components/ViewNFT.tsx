@@ -11,7 +11,7 @@ export default function ViewNFT() {
           <p className="mt-6 text-lg leading-8 text-black">
             Glückwunsch, du bist bereits Mitglied!{" "}
           </p>
-          <div className="nft-card">
+          <div className="nft-card border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
             <img
               style={{ display: "inline" }}
               src={nft.json.image.replace("ipfs://", "https://ipfs.io/ipfs/")}
