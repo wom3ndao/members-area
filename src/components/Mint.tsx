@@ -1,6 +1,6 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { constants } from "../constants";
-import { ethers } from "ethers";
+import { ethers, Signer } from "ethers";
 import { useSigner, useProvider, useAccount } from "wagmi";
 import useNfts from "../hooks/useNfts";
 
@@ -33,7 +33,7 @@ export default function Mint() {
     const metaDataUri = metaDataUris.find(
       (uri) => uri.id === currentTokenId
     )?.url;
-    const tx = await contract.connect(signer).mint(metaDataUri);
+    const tx = await contract.connect(signer as Signer).mint(metaDataUri);
     const result = await tx.wait();
   };
 

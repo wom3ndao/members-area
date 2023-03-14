@@ -1,5 +1,5 @@
 import { constants } from "../constants";
-import { ethers } from "ethers";
+import { ethers, Signer } from "ethers";
 import { useEffect, useMemo, useState } from "react";
 import { useSigner, useProvider, useAccount } from "wagmi";
 export interface Token {
@@ -46,7 +46,7 @@ const useNfts = () => {
   }
 
   async function listTokensOfOwner() {
-    contract.connect(signer).tokenOfOwnerByIndex;
+    contract.connect(signer as Signer).tokenOfOwnerByIndex;
     try {
       const nfts = await mapUsersNfts();
       console.log(nfts);
