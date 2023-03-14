@@ -11,7 +11,7 @@ import { qBlockchainTest } from "../qBlockchain";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [qBlockchainTest],
+  [qBlockchainTest as unknown as Chain],
   [
     jsonRpcProvider({
       rpc: (chain: Chain) => ({ http: chain.rpcUrls.default.http[0] }),
