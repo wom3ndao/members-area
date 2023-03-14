@@ -1,4 +1,4 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectButton as RainbowWidget } from "@rainbow-me/rainbowkit";
 import { constants } from "../constants";
 import { ethers, Signer } from "ethers";
 import { useSigner, useProvider, useAccount } from "wagmi";
@@ -35,13 +35,14 @@ export default function Mint() {
     )?.url;
     const tx = await contract.connect(signer as Signer).mint(metaDataUri);
     const result = await tx.wait();
+    console.log(result);
   };
 
   const MintButton = () => {
     return (
       <button
         onClick={() => mint()}
-        className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded"
+        className="bg-[#ba2a4b] hover:[#ba2a4b] text-white font-bold py-2 px-4 rounded"
       >
         Mint
       </button>
@@ -50,8 +51,17 @@ export default function Mint() {
 
   return (
     <>
-      {isConnected && !hasMinted && <MintButton />}
-      <ConnectButton />{" "}
+      <div className="bg-white py-24 px-6 sm:py-32 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-base font-semibold leading-7 text-black text-center">
+            Deine Wallet:
+            <RainbowWidget chainStatus="name" />
+          </p>
+          <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            {isConnected && !hasMinted && <MintButton />}
+          </h2>
+        </div>
+      </div>
     </>
   );
 }

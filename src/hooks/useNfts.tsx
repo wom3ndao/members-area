@@ -14,12 +14,15 @@ const useNfts = () => {
     constants.NFT_MEMBERSHIP_ABI
   );
   const provider = useProvider();
-  const { address } = useAccount();
-  const hasMinted = useMemo(() => nfts?.length > 0, [nfts, address]);
+  const { address, isConnected } = useAccount();
+  const hasMinted = useMemo(
+    () => nfts?.length > 0,
+    [nfts, address, isConnected]
+  );
 
   useEffect(() => {
     listTokensOfOwner();
-  }, [address]);
+  }, [address, isConnected]);
 
   async function mapUsersNfts() {
     const ids = await contract.connect(provider).balanceOf(address);

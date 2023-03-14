@@ -1,15 +1,13 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Mint from "../components/Mint";
 import ViewNFT from "../components/ViewNFT";
 import useNfts from "@/hooks/useNfts";
-
-const inter = Inter({ subsets: ["latin"] });
+import { useAccount } from "wagmi";
 
 export default function Home() {
   const { hasMinted } = useNfts();
+  const { address, isConnected } = useAccount();
 
   return (
     <>
@@ -31,7 +29,7 @@ export default function Home() {
               minten.
             </p>
           </div> */}
-          {hasMinted && (
+          {address && isConnected && hasMinted && (
             <div className="text-center">
               <ViewNFT />
             </div>
