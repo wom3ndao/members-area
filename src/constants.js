@@ -1,5 +1,5 @@
 export const constants = {
-    NFT_MEMBERSHIP_ADDRESS: "0x17C6BA74e7B19bE090Df9FF71E3bc963063bF27e",
+    NFT_MEMBERSHIP_ADDRESS: "0xeC70ad8d3e9f680c033a64Ac1b939347077e4377",
     NFT_MEMBERSHIP_ABI: [
         {
             "inputs": [],
@@ -54,6 +54,25 @@ export const constants = {
                 }
             ],
             "name": "ApprovalForAll",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "sender",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "tokenId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "NewEpicNFTMinted",
             "type": "event"
         },
         {
@@ -183,6 +202,32 @@ export const constants = {
             "type": "function"
         },
         {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "tokenId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "burn",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "changeOwner",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
             "inputs": [],
             "name": "contractURI",
             "outputs": [
@@ -196,19 +241,13 @@ export const constants = {
             "type": "function"
         },
         {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "tokenId",
-                    "type": "uint256"
-                }
-            ],
-            "name": "generateTokenURI",
+            "inputs": [],
+            "name": "devAddress",
             "outputs": [
                 {
-                    "internalType": "string",
+                    "internalType": "address",
                     "name": "",
-                    "type": "string"
+                    "type": "address"
                 }
             ],
             "stateMutability": "view",
@@ -234,13 +273,32 @@ export const constants = {
             "type": "function"
         },
         {
-            "inputs": [],
-            "name": "getCurrentTokenID",
-            "outputs": [
+            "inputs": [
                 {
                     "internalType": "uint256",
-                    "name": "",
+                    "name": "tokenId",
                     "type": "uint256"
+                }
+            ],
+            "name": "getOwnerOfToken",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getTotalMints",
+            "outputs": [
+                {
+                    "internalType": "uint8",
+                    "name": "",
+                    "type": "uint8"
                 }
             ],
             "stateMutability": "view",
@@ -255,25 +313,6 @@ export const constants = {
                 }
             ],
             "name": "hasMinted",
-            "outputs": [
-                {
-                    "internalType": "bool",
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "",
-                    "type": "string"
-                }
-            ],
-            "name": "ipfsUrlUsed",
             "outputs": [
                 {
                     "internalType": "bool",
@@ -310,27 +349,8 @@ export const constants = {
         },
         {
             "inputs": [],
-            "name": "maxSupply",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [],
             "name": "mint",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
+            "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
         },
@@ -393,6 +413,19 @@ export const constants = {
             "type": "function"
         },
         {
+            "inputs": [
+                {
+                    "internalType": "address[]",
+                    "name": "users",
+                    "type": "address[]"
+                }
+            ],
+            "name": "removeFromAllowlist",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
             "inputs": [],
             "name": "renounceOwnership",
             "outputs": [],
@@ -403,17 +436,30 @@ export const constants = {
             "inputs": [
                 {
                     "internalType": "address",
-                    "name": "from",
+                    "name": "_address",
+                    "type": "address"
+                }
+            ],
+            "name": "resetHasMinted",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "from_",
                     "type": "address"
                 },
                 {
                     "internalType": "address",
-                    "name": "to",
+                    "name": "to_",
                     "type": "address"
                 },
                 {
                     "internalType": "uint256",
-                    "name": "tokenId",
+                    "name": "tokenId_",
                     "type": "uint256"
                 }
             ],
@@ -464,6 +510,19 @@ export const constants = {
                 }
             ],
             "name": "setApprovalForAll",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_devAddress",
+                    "type": "address"
+                }
+            ],
+            "name": "setDevAddress",
             "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
@@ -530,50 +589,7 @@ export const constants = {
             "inputs": [
                 {
                     "internalType": "uint256",
-                    "name": "index",
-                    "type": "uint256"
-                }
-            ],
-            "name": "tokenByIndex",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "owner",
-                    "type": "address"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "index",
-                    "type": "uint256"
-                }
-            ],
-            "name": "tokenOfOwnerByIndex",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "tokenId_",
+                    "name": "tokenId",
                     "type": "uint256"
                 }
             ],
@@ -589,13 +605,19 @@ export const constants = {
             "type": "function"
         },
         {
-            "inputs": [],
-            "name": "totalSupply",
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "owner",
+                    "type": "address"
+                }
+            ],
+            "name": "tokensOwnedBy",
             "outputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint256[]",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint256[]"
                 }
             ],
             "stateMutability": "view",

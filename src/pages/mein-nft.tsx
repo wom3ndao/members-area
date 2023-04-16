@@ -2,7 +2,6 @@ import useNfts, { Token } from "../hooks/useNfts";
 
 export default function MyNFT() {
   const { nfts, hasMinted } = useNfts(false);
-
   if (!hasMinted) return null;
   return (
     <>
@@ -11,7 +10,7 @@ export default function MyNFT() {
           <div className="nft-card border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
             <img
               style={{ display: "inline" }}
-              src={nft.json.image.replace("ipfs://", "https://ipfs.io/ipfs/")}
+              src={nft.image}
               alt=""
               className="nft-card__img"
             />
