@@ -4,10 +4,9 @@ import { ethers, Signer } from "ethers";
 import { useSigner, useAccount } from "wagmi";
 import { useState } from "react";
 
-export default function Mint() {
+export default function Mint({ isMinting, toggleMinting }: any) {
   const { address } = useAccount();
   const { data: signer } = useSigner();
-  const [isMinting, toggleMinting] = useState(false);
   const contract = new ethers.Contract(
     constants.NFT_MEMBERSHIP_ADDRESS,
     constants.NFT_MEMBERSHIP_ABI

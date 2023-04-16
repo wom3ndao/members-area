@@ -18,6 +18,7 @@ import useNfts from "@/hooks/useNfts";
 import Link from "next/link";
 
 const Layout = ({ Component, pageProps }: AppProps) => {
+  const [isMinting, toggleMinting] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { hasMinted } = useNfts(false);
   const navigation = useMemo(() => {
@@ -259,7 +260,11 @@ const Layout = ({ Component, pageProps }: AppProps) => {
 
           <main className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <Component {...pageProps} />
+              <Component
+                {...pageProps}
+                isMinting={isMinting}
+                toggleMinting={toggleMinting}
+              />
             </div>
           </main>
         </div>

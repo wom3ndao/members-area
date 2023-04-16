@@ -3,8 +3,8 @@ import useNfts from "@/hooks/useNfts";
 import { useAccount } from "wagmi";
 import Link from "next/link";
 
-export default function Home() {
-  const { hasMinted } = useNfts(false);
+export default function Home({ isMinting, toggleMinting }: any) {
+  const { hasMinted } = useNfts(isMinting);
   const { address, isConnected } = useAccount();
 
   return (
@@ -33,7 +33,9 @@ export default function Home() {
           </p>
         )}
         <div className="mt-10 flex items-center gap-x-6">
-          {!hasMinted && <Mint />}
+          {!hasMinted && (
+            <Mint isMinting={isMinting} toggleMinting={toggleMinting} />
+          )}
           {hasMinted && (
             <Link
               href="/votings"
