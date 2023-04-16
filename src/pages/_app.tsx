@@ -6,12 +6,14 @@ import {
   RainbowKitProvider,
   Chain,
 } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { configureChains, createClient, goerli, WagmiConfig } from "wagmi";
 import { qBlockchainTest } from "../qBlockchain";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import Layout from "@/components/Layout";
+import { Router } from "next/router";
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [qBlockchainTest as unknown as Chain],
+  [qBlockchainTest as unknown as Chain, goerli],
   [
     jsonRpcProvider({
       rpc: (chain: Chain) => ({ http: chain.rpcUrls.default.http[0] }),
@@ -20,7 +22,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "My RainbowKit App",
+  appName: "Wom3n.DAO NFT Minting",
   chains,
 });
 
@@ -31,11 +33,15 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps, router }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
+        <Layout
+          Component={Component}
+          pageProps={pageProps}
+          router={router as Router}
+        />
       </RainbowKitProvider>
     </WagmiConfig>
   );

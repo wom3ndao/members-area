@@ -6,7 +6,7 @@ export interface Token {
   id: string;
   json: any;
 }
-const useNfts = () => {
+const useNfts = (isMinting: boolean) => {
   const { data: signer } = useSigner();
   const [nfts, setNfts] = useState<any>();
   const contract = new ethers.Contract(
@@ -17,35 +17,21 @@ const useNfts = () => {
   const { address, isConnected } = useAccount();
   const hasMinted = useMemo(
     () => nfts?.length > 0,
-    [nfts, address, isConnected]
+    [nfts, address, isConnected, isMinting]
   );
-
+  console.log(hasMinted);
   useEffect(() => {
     listTokensOfOwner();
-  }, [address, isConnected]);
+  }, [address, isConnected, isMinting]);
 
   async function mapUsersNfts() {
-    const ids = await contract.connect(provider).balanceOf(address);
-    console.log(ids);
-    const idsArray = Array.from(Array(ids).keys());
-    if (!+ids || !idsArray.length) return [];
-
-    const nfts = (await Promise.all(
-      idsArray.map(async (id) => {
-        const tokenId = await contract
-          .connect(provider)
-          .tokenOfOwnerByIndex(address!, id);
-        const uri = await contract.connect(provider).tokenURI(tokenId);
-        const response = await fetch(
-          uri.replace("ipfs://", "https://ipfs.io/ipfs/")
-        );
-        const json = await response.json();
-        return { id: tokenId.toNumber(), json: json } as Token;
-      })
-    )) as Token[];
-
-    if (!nfts.length) return [];
-    return nfts;
+    const id = await contract.connect(provider).balanceOf(address);
+    const uri = await contract.connect(provider).tokenURI(id.toString());
+    const response = await fetch(
+      uri.replace("ipfs://", "https://ipfs.io/ipfs/")
+    );
+    const json = await response.json();
+    return [{ id: id.toNumber(), json: json }] as Token[];
   }
 
   async function listTokensOfOwner() {

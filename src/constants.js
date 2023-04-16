@@ -1,19 +1,8 @@
 export const constants = {
-    NFT_MEMBERSHIP_ADDRESS: "0xb7d4793651fbCa370D91cAcf9d277D4D4d35bed4",
+    NFT_MEMBERSHIP_ADDRESS: "0x17C6BA74e7B19bE090Df9FF71E3bc963063bF27e",
     NFT_MEMBERSHIP_ABI: [
         {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "name_",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "symbol_",
-                    "type": "string"
-                }
-            ],
+            "inputs": [],
             "stateMutability": "nonpayable",
             "type": "constructor"
         },
@@ -114,6 +103,38 @@ export const constants = {
         {
             "inputs": [
                 {
+                    "internalType": "address[]",
+                    "name": "users",
+                    "type": "address[]"
+                }
+            ],
+            "name": "addToAllowlist",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "name": "allowlist",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
                     "internalType": "address",
                     "name": "to",
                     "type": "address"
@@ -143,6 +164,51 @@ export const constants = {
                     "internalType": "uint256",
                     "name": "",
                     "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "baseUrl",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "contractURI",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "tokenId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "generateTokenURI",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
                 }
             ],
             "stateMutability": "view",
@@ -202,6 +268,25 @@ export const constants = {
         {
             "inputs": [
                 {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "name": "ipfsUrlUsed",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
                     "internalType": "address",
                     "name": "owner",
                     "type": "address"
@@ -237,13 +322,7 @@ export const constants = {
             "type": "function"
         },
         {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "metadataURI",
-                    "type": "string"
-                }
-            ],
+            "inputs": [],
             "name": "mint",
             "outputs": [
                 {
@@ -362,7 +441,7 @@ export const constants = {
                 },
                 {
                     "internalType": "bytes",
-                    "name": "_data",
+                    "name": "data",
                     "type": "bytes"
                 }
             ],
@@ -567,6 +646,37 @@ export const constants = {
                 }
             ],
             "name": "transferOwnership",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "_baseUrl",
+                    "type": "string"
+                }
+            ],
+            "name": "updateBaseUrl",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "tokenId",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "string",
+                    "name": "newURI",
+                    "type": "string"
+                }
+            ],
+            "name": "updateTokenURI",
             "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
