@@ -7,13 +7,17 @@ import {
   Chain,
 } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, goerli, WagmiConfig } from "wagmi";
-import { qBlockchainTest } from "../qBlockchain";
+import { qBlockchainTest, qBlockchainMain } from "../qBlockchain";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import Layout from "@/components/Layout";
 import { Router } from "next/router";
+import { get_stage } from "@/utils";
+
+const networks =
+  get_stage() === "production" ? [qBlockchainMain] : [goerli, qBlockchainTest];
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [qBlockchainTest as unknown as Chain, goerli],
+  networks as Chain[],
   [
     jsonRpcProvider({
       rpc: (chain: Chain) => ({ http: chain.rpcUrls.default.http[0] }),

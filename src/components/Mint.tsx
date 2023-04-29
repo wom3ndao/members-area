@@ -1,14 +1,16 @@
-import { ConnectButton as RainbowWidget } from "@rainbow-me/rainbowkit";
 import { constants } from "../constants";
 import { ethers, Signer } from "ethers";
 import { useSigner, useAccount } from "wagmi";
-import { useState } from "react";
+import { get_stage } from "@/utils";
 
 export default function Mint({ isMinting, toggleMinting }: any) {
   const { address } = useAccount();
   const { data: signer } = useSigner();
+
   const contract = new ethers.Contract(
-    constants.NFT_MEMBERSHIP_ADDRESS,
+    get_stage() === "production"
+      ? constants.NFT_MEMBERSHIP_ADDRESS_Q_MAINNET
+      : constants.NFT_MEMBERSHIP_ADDRESS_Q_TESTNET,
     constants.NFT_MEMBERSHIP_ABI
   );
 

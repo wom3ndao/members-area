@@ -2,6 +2,8 @@ import { constants } from "../constants";
 import { ethers } from "ethers";
 import { useEffect, useMemo, useState } from "react";
 import { useProvider, useAccount } from "wagmi";
+import { get_stage } from "@/utils";
+
 export interface Token {
   description: string;
   image: string;
@@ -11,7 +13,9 @@ export interface Token {
 const useNfts = (isMinting: boolean) => {
   const [nfts, setNfts] = useState<any>();
   const contract = new ethers.Contract(
-    constants.NFT_MEMBERSHIP_ADDRESS,
+    get_stage() === "production"
+      ? constants.NFT_MEMBERSHIP_ADDRESS_Q_MAINNET
+      : constants.NFT_MEMBERSHIP_ADDRESS_Q_TESTNET,
     constants.NFT_MEMBERSHIP_ABI
   );
   const provider = useProvider();
@@ -26,16 +30,18 @@ const useNfts = (isMinting: boolean) => {
 
   async function mapUsersNfts() {
     const ids = await contract.connect(provider).tokensOwnedBy(address);
-
+    console.log(ids);
     const nfts = (await Promise.all(
       ids.map(async (id: number) => {
         const uri = await contract.connect(provider).tokenURI(id.toString());
+        console.log(uri);
         const response = await fetch(uri);
         const json = await response.json();
-
+        console.log(json);
         return { ...json, id: id.toString() };
       })
     )) as Token[];
+    console.log(nfts);
     return nfts;
   }
 
