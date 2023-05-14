@@ -1,10 +1,9 @@
 export const constants = {
     NFT_MEMBERSHIP_ADDRESS_GOERLI: "0x66fa386E09741B664421a671a7DE321c2E09FDaf",
-    NFT_MEMBERSHIP_ADDRESS_Q_TESTNET: "0x722A12162480d08c3F3f6EA567dFCB2C200DeB60",
+    NFT_MEMBERSHIP_ADDRESS_Q_TESTNET: "0xB7801e46CB57C2ee24A5C200Bd008772Ed40337c",
     NFT_MEMBERSHIP_ADDRESS_Q_MAINNET: "",
 
     NFT_MEMBERSHIP_ABI: [
-
         {
             "inputs": [],
             "stateMutability": "nonpayable",
@@ -440,30 +439,17 @@ export const constants = {
             "inputs": [
                 {
                     "internalType": "address",
-                    "name": "_address",
-                    "type": "address"
-                }
-            ],
-            "name": "resetHasMinted",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "from_",
+                    "name": "from",
                     "type": "address"
                 },
                 {
                     "internalType": "address",
-                    "name": "to_",
+                    "name": "to",
                     "type": "address"
                 },
                 {
                     "internalType": "uint256",
-                    "name": "tokenId_",
+                    "name": "tokenId",
                     "type": "uint256"
                 }
             ],
@@ -560,6 +546,19 @@ export const constants = {
         {
             "inputs": [
                 {
+                    "internalType": "address",
+                    "name": "_vaultAddress",
+                    "type": "address"
+                }
+            ],
+            "name": "setVaultAddress",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
                     "internalType": "bytes4",
                     "name": "interfaceId",
                     "type": "bytes4"
@@ -584,6 +583,49 @@ export const constants = {
                     "internalType": "string",
                     "name": "",
                     "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "index",
+                    "type": "uint256"
+                }
+            ],
+            "name": "tokenByIndex",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "owner",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "index",
+                    "type": "uint256"
+                }
+            ],
+            "name": "tokenOfOwnerByIndex",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
                 }
             ],
             "stateMutability": "view",
@@ -622,6 +664,19 @@ export const constants = {
                     "internalType": "uint256[]",
                     "name": "",
                     "type": "uint256[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "totalSupply",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
                 }
             ],
             "stateMutability": "view",
@@ -679,6 +734,29 @@ export const constants = {
         {
             "inputs": [
                 {
+                    "internalType": "address",
+                    "name": "from_",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "to_",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "tokenId_",
+                    "type": "uint256"
+                }
+            ],
+            "name": "transferToken",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
                     "internalType": "string",
                     "name": "_baseUrl",
                     "type": "string"
@@ -705,6 +783,19 @@ export const constants = {
             "name": "updateTokenURI",
             "outputs": [],
             "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "vaultAddress",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
             "type": "function"
         }
     ]
