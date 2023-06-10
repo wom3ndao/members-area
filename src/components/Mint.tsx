@@ -19,7 +19,9 @@ export default function Mint({ isMinting, toggleMinting }: any) {
 
     if (!address) return;
     try {
-      const tx = await contract.connect(signer as Signer).mint();
+      const tx = await contract.connect(signer as Signer).mint({
+        gasLimit: 30000,
+      });
       const result = await tx.wait();
       toggleMinting(false);
       console.log(result);
