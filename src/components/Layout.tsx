@@ -20,27 +20,25 @@ import Link from "next/link";
 const Layout = ({ Component, pageProps }: AppProps) => {
   const [isMinting, toggleMinting] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { hasMinted } = useNfts(false);
   const navigation = useMemo(() => {
     const nav = [
       { name: "Dashboard", href: "/", icon: HomeIcon, current: false },
-    ];
-    if (hasMinted) {
-      nav.push({
+      ,
+      {
         name: "Mein NFT",
         href: "/mein-nft",
         icon: FolderIcon,
         current: false,
-      });
-      nav.push({
+      },
+      {
         name: "Votings",
         href: "/votings",
         icon: CalendarIcon,
         current: false,
-      });
-    }
+      },
+    ];
     return nav;
-  }, [hasMinted]);
+  }, []);
 
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");

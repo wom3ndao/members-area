@@ -1,6 +1,6 @@
 import useNfts, { Token } from "../hooks/useNfts";
 
-export default function MyNFT() {
+export default function Collection() {
   const { nfts, hasMinted } = useNfts(false);
   if (!hasMinted)
     return (

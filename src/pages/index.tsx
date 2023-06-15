@@ -1,11 +1,34 @@
 import Mint from "../components/Mint";
 import useNfts from "@/hooks/useNfts";
-import { useAccount } from "wagmi";
+import { useAccount, useProvider } from "wagmi";
 import Link from "next/link";
+import { get_stage } from "@/utils";
+import { ethers } from "ethers";
+import { useEffect, useState } from "react";
+import { constants } from "../constants";
 
 export default function Home({ isMinting, toggleMinting }: any) {
   const { hasMinted } = useNfts(isMinting);
   const { address, isConnected } = useAccount();
+  const [isAllowed, setIsAllowed] = useState();
+
+  const provider = useProvider();
+
+  const contract = new ethers.Contract(
+    get_stage() === "production"
+      ? constants.NFT_MEMBERSHIP_ADDRESS_Q_MAINNET
+      : constants.NFT_MEMBERSHIP_ADDRESS_Q_TESTNET,
+    constants.NFT_MEMBERSHIP_ABI
+  );
+
+  useEffect(() => {
+    getIsAllowed();
+  }, [address]);
+
+  const getIsAllowed = async () => {
+    const isAllowed = await contract.connect(provider).allowlist(address);
+    setIsAllowed(isAllowed);
+  };
 
   return (
     <div className="relative px-6 py-12 sm:py-20 lg:px-8 lg:py-24 lg:pr-0">
@@ -33,6 +56,13 @@ export default function Home({ isMinting, toggleMinting }: any) {
           </p>
         )}
         <div className="mt-10 flex items-center gap-x-6">
+          <b>
+            {isConnected && isAllowed && !hasMinted
+              ? "Deine Wallet steht auf der Allowlist!"
+              : null}
+          </b>
+        </div>
+        <div className="mt-5 flex items-center gap-x-6">
           {!hasMinted && (
             <Mint isMinting={isMinting} toggleMinting={toggleMinting} />
           )}
