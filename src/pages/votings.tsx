@@ -16,7 +16,7 @@ export default function Votings() {
       <div className="nft-card border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
         <p className="text-lg leading-8 text-gray-600">
           Unsere DAO wird über über Smart Contracts auf der Q-Blockchain
-          gesteuert. Hier geht's direkt zum DAO Dashboard! <br /> <br />
+          gesteuert. Hier geht&apos;s direkt zum DAO Dashboard! <br /> <br />
           <a href={`https://hq.q-dao.tools/${constants.DAO_ADDRESS}`}>
             <button
               type="submit"
