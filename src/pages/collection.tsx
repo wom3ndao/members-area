@@ -1,35 +1,45 @@
+import { useState, useEffect } from "react";
 import useNfts, { Token } from "../hooks/useNfts";
+import styled from "styled-components";
+
+const ImageGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 10px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: auto;
+`;
 
 export default function Collection() {
-  const { nfts, hasMinted } = useNfts(false);
-  if (!hasMinted)
-    return (
-      <div className="nft-card border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
-        <p className="text-lg leading-8 text-gray-600">
-          Du bist leider noch kein DAO-Mitglied.
-        </p>
-      </div>
-    );
-  return (
-    <>
-      {nfts?.map((nft: Token) => (
-        <>
-          <div className="nft-card border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
-            <img
-              style={{ display: "inline" }}
-              src={nft.image}
-              alt=""
-              className="nft-card__img"
-            />
+  const [images, setImages] = useState([]);
 
-            <div className="nft-card__content">
-              <h2 className="nft-card__content-title">
-                wom3n.DAO NFT Season #1 No. {nft?.id}
-              </h2>
-            </div>
-          </div>
-        </>
+  useEffect(() => {
+    let imageUrls = [];
+
+    for (let i = 1; i <= 50; i++) {
+      const imageUrl = `https://bafybeihocfptf5aemeo3iuk6hi6ibccbfjemco4xuwzs7sexxqjpssolee.ipfs.nftstorage.link/WiB-Avatar-${i}.png`;
+      imageUrls.push(imageUrl);
+    }
+
+    setImages(imageUrls as any);
+  }, []);
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {images.map((imageUrl, idx) => (
+        <img
+          key={idx}
+          src={imageUrl}
+          className="w-full h-auto"
+          alt={`xyz${idx + 1}`}
+        />
       ))}
-    </>
+    </div>
   );
 }

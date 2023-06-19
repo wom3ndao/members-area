@@ -15,7 +15,7 @@ export default function Mint({ isMinting, toggleMinting }: any) {
   );
 
   const mint = async () => {
-    toggleMinting(true);
+    toggleMinting && toggleMinting(true);
 
     if (!address) return;
     try {
@@ -23,10 +23,10 @@ export default function Mint({ isMinting, toggleMinting }: any) {
         gasLimit: 1000000,
       });
       const result = await tx.wait();
-      toggleMinting(false);
+      toggleMinting && toggleMinting(false);
       console.log(result);
     } catch (e) {
-      toggleMinting(false);
+      toggleMinting && toggleMinting(false);
       console.log(e);
     }
   };

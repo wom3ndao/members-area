@@ -36,6 +36,12 @@ const Layout = ({ Component, pageProps }: AppProps) => {
         icon: CalendarIcon,
         current: false,
       },
+      {
+        name: "Collection",
+        href: "/collection",
+        icon: CalendarIcon,
+        current: false,
+      },
     ];
     return nav;
   }, []);

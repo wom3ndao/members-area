@@ -28,6 +28,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 const { connectors } = getDefaultWallets({
   appName: "Wom3n.DAO NFT Minting",
   chains,
+  projectId: "1f4b4719ef07502e1870a866650c0066",
 });
 
 const wagmiClient = createClient({

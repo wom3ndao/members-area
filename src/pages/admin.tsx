@@ -1,7 +1,7 @@
 import { get_stage } from "@/utils";
 import { ethers, Signer } from "ethers";
 import { useAccount, useProvider, useSigner } from "wagmi";
-import useNfts, { Token } from "../hooks/useNfts";
+import Mint from "../components/Mint";
 import { constants } from "../constants";
 import { useEffect, useState } from "react";
 
@@ -271,6 +271,15 @@ export default function Admin() {
           >
             Burn
           </button>
+        </div>
+      </div>
+      <hr />
+      <div className="pt-6 pb-6">
+        <h3 className="text-base font-semibold leading-6 text-gray-900">
+          Mint Token
+        </h3>
+        <div className="mt-5 sm:flex sm:items-center">
+          <Mint />
         </div>
       </div>
     </div>
