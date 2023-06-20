@@ -5,7 +5,6 @@ import { useLanguage } from "context/LanguageProvider";
 import { useTheme } from "styled-components";
 
 import { SettingsMenuContainer } from "./styles";
-import { useEffect } from "react";
 
 function LanguageSwitcher({ onLanguageOpen }: { onLanguageOpen: () => void }) {
   const { isDarkTheme, onChangeTheme } = useTheme();
@@ -13,10 +12,6 @@ function LanguageSwitcher({ onLanguageOpen }: { onLanguageOpen: () => void }) {
   const { i18n, t } = useTranslation();
   const { languageList } = useLanguage();
   const language = languageList.find(({ locale }) => locale === i18n.language) || languageList[0];
-
-  useEffect(() => {
-    if (isDarkTheme) onChangeTheme();
-  }, []);
 
   return (
     <SettingsMenuContainer>
