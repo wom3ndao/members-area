@@ -1,27 +1,28 @@
-import { lazy } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { lazy } from "react";
+import { Route, Switch } from "react-router-dom";
 
-import LazyLoading from 'components/Base/LazyLoading';
-import ErrorBoundary from 'components/Custom/ErrorBoundary';
+import LazyLoading from "components/Base/LazyLoading";
+import ErrorBoundary from "components/Custom/ErrorBoundary";
+import Admin from "pages/Admin";
 
-const Imprint = lazy(() => import('pages/Imprint'));
-const DataPrivacy = lazy(() => import('pages/DataPrivacy'));
-const NotFound = lazy(() => import('pages/NotFound'));
+const Imprint = lazy(() => import("pages/Imprint"));
+const DataPrivacy = lazy(() => import("pages/DataPrivacy"));
+const NotFound = lazy(() => import("pages/NotFound"));
 
-const VotingPower = lazy(() => import('pages/VotingPower'));
-const Manage = lazy(() => import('pages/Parameters'));
-const Dashboard = lazy(() => import('pages/Dashboard'));
+const VotingPower = lazy(() => import("pages/VotingPower"));
+const Manage = lazy(() => import("pages/Parameters"));
+const Dashboard = lazy(() => import("pages/Dashboard"));
 
-const Governance = lazy(() => import('pages/Governance'));
-const NewProposal = lazy(() => import('pages/Governance/NewProposal'));
-const Proposal = lazy(() => import('pages/Governance/Proposal'));
+const Governance = lazy(() => import("pages/Governance"));
+const NewProposal = lazy(() => import("pages/Governance/NewProposal"));
+const Proposal = lazy(() => import("pages/Governance/Proposal"));
 
-const MyNFT = lazy(() => import('pages/My-NFT/MyNFT'));
-const Collection = lazy(() => import('pages/Collection/Collection'));
+const MyNFT = lazy(() => import("pages/My-NFT/MyNFT"));
+const Collection = lazy(() => import("pages/Collection/Collection"));
 
-const DAO_ADDRESS = '0x366B2BFCdDA4AfA86f895e22e8984b004c879367';
+const DAO_ADDRESS = "0x366B2BFCdDA4AfA86f895e22e8984b004c879367";
 
-function Routes () {
+function Routes() {
   return (
     <ErrorBoundary>
       <LazyLoading>
@@ -36,6 +37,10 @@ function Routes () {
 
           <Route exact path="/privacy">
             <DataPrivacy />
+          </Route>
+
+          <Route exact path="/admin">
+            <Admin />
           </Route>
 
           <Route exact path="/mein-nft">
