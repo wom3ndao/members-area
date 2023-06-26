@@ -1,34 +1,58 @@
-import PageLayout from 'components/PageLayout';
+import { StyledWrapper } from "components/Mint/Mint";
+import PageLayout from "components/PageLayout";
 
-import useNfts, { Token } from 'hooks/useNfts';
+import useNfts, { Token } from "hooks/useNfts";
 
-function MyNFT () {
-  const { nfts, hasMinted } = useNfts(false);
-  if (!hasMinted) {
-    return (
-      <div className="nft-card border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
-        <p className="text-lg leading-8 text-gray-600">Du bist leider noch kein DAO-Mitglied.</p>
-      </div>
-    );
-  }
+function MyNFT() {
+  const { nfts, hasMinted, hasInVault, vaultNfts } = useNfts(false);
+  // const { nftsInVault, hasNFTinVault } = useVault();
+  console.log(nfts, vaultNfts);
+
   return (
-    <PageLayout title={'Mein NFT'}>
-      {nfts?.map((nft: Token) => (
-        <>
-          <div className="nft-card border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
-            <img
-              style={{ display: 'inline', width: 500 }}
-              src={nft.image}
-              alt=""
-              className="nft-card__img"
-            />
+    <PageLayout title={"Mein wom3n.DAO NFT"}>
+      {!hasMinted && !hasInVault && (
+        <div className="nft-card border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
+          <p className="text-lg leading-8 text-gray-600">Du bist leider noch kein DAO-Mitglied.</p>
+        </div>
+      )}
+      {hasMinted && (
+        <StyledWrapper className="block">
+          <div className="expert-panel-block__header block__header">in deiner Wallet</div>
 
-            <div className="nft-card__content">
-              <h2 className="nft-card__content-title">wom3n.DAO NFT Season #1 No. {nft?.id}</h2>
-            </div>
+          <div className="block__content">
+            {nfts?.map((nft: Token) => (
+              <>
+                <div className="nft-card border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
+                  <img style={{ display: "inline", width: 500 }} src={nft.image} alt="" className="nft-card__img" />
+
+                  <div className="nft-card__content">
+                    <h2 className="nft-card__content-title">wom3n.DAO NFT Season #1 No. {nft?.id}</h2>
+                  </div>
+                </div>
+              </>
+            ))}
           </div>
-        </>
-      ))}
+        </StyledWrapper>
+      )}
+      {hasInVault && (
+        <StyledWrapper className="block">
+          <div className="expert-panel-block__header block__header">in deiner DAO</div>
+
+          <div className="block__content">
+            {vaultNfts?.map((nft: any) => (
+              <>
+                <div className="nft-card border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
+                  <img style={{ display: "inline", width: 500 }} src={nft.image} alt="" className="nft-card__img" />
+
+                  <div className="nft-card__content">
+                    <h2 className="nft-card__content-title">wom3n.DAO NFT Season #1 No. {nft?.id}</h2>
+                  </div>
+                </div>
+              </>
+            ))}
+          </div>
+        </StyledWrapper>
+      )}
     </PageLayout>
   );
 }

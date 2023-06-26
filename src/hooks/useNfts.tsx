@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
 
-import useContract from './useContract';
+import useContract from "./useContracts";
 
-import { useProviderStore } from 'store/provider/hooks';
+import { useProviderStore } from "store/provider/hooks";
+import { useDaoVault } from "store/dao-vault/hooks";
 
 export interface Token {
   description: string;
@@ -13,34 +14,44 @@ export interface Token {
 
 const useNfts = (isMinting: boolean) => {
   const [nfts, setNfts] = useState<any>();
+  const [vaultNfts, setVaultNfts] = useState<any>();
   const { nftContract: contract } = useContract();
   const { currentProvider } = useProviderStore();
+  const { walletNftsList, withdrawalNftsList } = useDaoVault();
+
   const hasMinted = useMemo(() => nfts?.length > 0, [nfts, currentProvider?.selectedAddress, isMinting]);
+  const hasInVault = useMemo(() => vaultNfts?.length > 0, [nfts, currentProvider?.selectedAddress]);
+
   useEffect(() => {
     listTokensOfOwner();
-  }, [currentProvider?.selectedAddress, isMinting]);
+    listVaultTokensOfOwner();
+  }, [currentProvider?.selectedAddress, isMinting, withdrawalNftsList, walletNftsList]);
 
-  async function mapUsersNfts () {
-    console.log(currentProvider);
-    if (!currentProvider) return;
-    const ids = await contract
-      .connect(currentProvider?.provider as any)
-      .tokensOwnedBy(currentProvider?.selectedAddress);
-    const nfts = (await Promise.all(
-      ids.map(async (id: number) => {
-        const uri = await contract.connect(currentProvider?.provider as any).tokenURI(id.toString());
-        console.log(uri);
-        const response = await fetch(uri);
-        const json = await response.json();
-        console.log(json);
-        return { ...json, id: id.toString() };
-      })
-    )) as Token[];
-    console.log(nfts);
+  async function mapUsersNfts() {
+    if (!currentProvider) return [];
+    const promises = walletNftsList?.map(async (id: any) => {
+      const uri = await contract.connect(currentProvider?.provider as any).tokenURI(id.toString());
+      const response = await fetch(uri);
+      const json = await response.json();
+      return { ...json, id: id.toString() };
+    });
+    const nfts = promises?.length && (await Promise?.all(promises));
     return nfts;
   }
 
-  async function listTokensOfOwner () {
+  async function mapUsersVaultNfts() {
+    if (!currentProvider) return [];
+    const promises = vaultNfts?.map(async (id: any) => {
+      const uri = await contract.connect(currentProvider?.provider as any).tokenURI(id.toString());
+      const response = await fetch(uri);
+      const json = await response.json();
+      return { ...json, id: id.toString() };
+    });
+    const nfts = promises?.length && (await Promise?.all(promises));
+    return nfts;
+  }
+
+  async function listTokensOfOwner() {
     try {
       const nfts = await mapUsersNfts();
       setNfts(nfts);
@@ -49,9 +60,20 @@ const useNfts = (isMinting: boolean) => {
     }
   }
 
+  async function listVaultTokensOfOwner() {
+    try {
+      const nfts = await mapUsersVaultNfts();
+      setVaultNfts(nfts);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return {
     nfts: nfts,
+    vaultNfts: withdrawalNftsList,
     hasMinted: hasMinted,
+    hasInVault: hasInVault,
   };
 };
 

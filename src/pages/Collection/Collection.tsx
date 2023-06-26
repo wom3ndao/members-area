@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useEffect, useState } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import styled from "styled-components";
+import { Button } from '@q-dev/q-ui-kit';
+import styled from 'styled-components';
 
-import LoadingSpinner from "components/LoadingSpinner";
-import PageLayout from "components/PageLayout";
+import LoadingSpinner from 'components/LoadingSpinner';
+import PageLayout from 'components/PageLayout';
 
-import PlaceholderImage from "../../images/placeholder.png";
-import { Button } from "@q-dev/q-ui-kit";
+import PlaceholderImage from '../../images/placeholder.png';
 
 const Grid = styled.div`
   display: grid;
@@ -62,7 +62,7 @@ const Collection = () => {
   }
 
   return (
-    <PageLayout title={"Collection"}>
+    <PageLayout title={'Collection'}>
       <div>
         <p className="text-md color-secondary">wom3n.DAO NFT Season #1</p>
         <div className="balance-overview__params-value-wrapper">
@@ -77,7 +77,7 @@ const Collection = () => {
               placeholderSrc={PlaceholderImage}
               effect="blur"
               style={{
-                marginTop: "-2px",
+                marginTop: '-2px',
                 // border: "2px solid #ccc",
                 // borderRadius: "8px",
                 // padding: "5px",
@@ -94,8 +94,8 @@ const Collection = () => {
       {visibleImages < images.length && (
         <div
           style={{
-            display: "grid",
-            placeItems: "center",
+            display: 'grid',
+            placeItems: 'center',
           }}
         >
           <Button onClick={handleShowMore}>Show More</Button>

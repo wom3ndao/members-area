@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-import { Button } from '@q-dev/q-ui-kit';
-import { Signer } from 'ethers';
-import styled from 'styled-components';
+import { Button } from "@q-dev/q-ui-kit";
+import { Signer } from "ethers";
+import styled from "styled-components";
 
-import useContract from 'hooks/useContract';
-import useNfts from 'hooks/useNfts';
+import useContract from "hooks/useContracts";
+import useNfts from "hooks/useNfts";
 
-import { useProviderStore } from 'store/provider/hooks';
+import { useProviderStore } from "store/provider/hooks";
 
-const StyledWrapper = styled.div`
+export const StyledWrapper = styled.div`
   .expert-panel-block__header {
     margin-right: -8px;
   }
@@ -33,7 +33,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-function Mint () {
+function Mint() {
   const { t } = useTranslation();
   const { currentProvider } = useProviderStore();
   const { nftContract: contract } = useContract();
@@ -71,7 +71,7 @@ function Mint () {
     <StyledWrapper className="block">
       <div className="expert-panel-block__header block__header">
         <h3 className="text-h3">
-          {currentProvider?.selectedAddress && hasMinted ? 'Willkommen in deiner wom3n.DAO!' : 'Membership NFT'}
+          {currentProvider?.selectedAddress && hasMinted ? "Willkommen in deiner wom3n.DAO!" : "Membership NFT"}
         </h3>
       </div>
 
@@ -86,15 +86,10 @@ function Mint () {
           <>
             <p>Du bist leider nicht berechtigt, ein wom3n.DAO NFT zu minten.</p>
             <p className="text-sm font-light">
-              Finde{' '}
-              <a
-                style={{ textDecoration: 'underline' }}
-                rel="noreferrer"
-                href="https://wom3n.io"
-                target="_blank"
-              >
+              Finde{" "}
+              <a style={{ textDecoration: "underline" }} rel="noreferrer" href="https://wom3n.io" target="_blank">
                 hier
-              </a>{' '}
+              </a>{" "}
               heraus, wie das geht.
             </p>
           </>
@@ -102,7 +97,7 @@ function Mint () {
 
         {currentProvider?.selectedAddress && isAllowed && !hasMinted && (
           <Button onClick={() => mint()}>
-            {isMinting ? 'Minting .. Please wait..' : 'Jetzt Minten und Membership sichern!'}
+            {isMinting ? "Minting .. Please wait.." : "Jetzt Minten und Membership sichern!"}
           </Button>
         )}
         {currentProvider?.selectedAddress && hasMinted && <p>(Du bist bereits Mitglied! :))</p>}

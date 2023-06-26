@@ -1,32 +1,75 @@
-import { useEffect, useState } from 'react';
+import { useState } from "react";
+import styled from "styled-components";
 
-import { Signer } from 'ethers';
+import { Signer } from "ethers";
 
-import useContract from 'hooks/useContract';
+import useContract from "hooks/useContracts";
 
-import Mint from '../../components/Mint/Mint';
+import Mint from "../../components/Mint/Mint";
 
-import { useProviderStore } from 'store/provider/hooks';
+import { useProviderStore } from "store/provider/hooks";
+import { Button } from "@q-dev/q-ui-kit";
+import { useDaoVault } from "store/dao-vault/hooks";
+import { daoInstance } from "contracts/contract-instance";
+import { getState } from "store";
 
-export default function Admin () {
+const Container = styled.div`
+  background-color: white;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+`;
+
+const Title = styled.h3`
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+`;
+
+const SubText = styled.p`
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+`;
+
+const Input = styled.input`
+  display: block;
+  padding: 1rem;
+  width: 100%;
+  border-radius: 0.375rem;
+  border: none;
+  background-color: #fff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  outline: none;
+  font-size: 0.875rem;
+  color: #111827;
+  &::placeholder {
+    color: #9ca3af;
+  }
+`;
+
+const HorizontalRule = styled.hr`
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: none;
+  border-top: 1px solid #d1d5db;
+`;
+
+export default function Admin() {
   const { currentProvider } = useProviderStore();
   const [vault, setVault] = useState<any>();
-  const [vaultNow, setVaultNow] = useState<string>();
   const [addToAllowlistAddress, setAddToAllowlistAddress] = useState<string>();
   const [transferTokenAddress, setTransferTokenAddress] = useState<string>();
   const [transferTokenID, setTransferTokenID] = useState<string>();
   const [transferTokenAddressFrom, setTransferTokenAddressFrom] = useState<string>();
+  const [withdrawID, setWithdrawId] = useState<string>();
+  const [withdrawAddress, setWithdrawAddress] = useState<string>();
+
   const [burnID, setBurnID] = useState<string>();
-  const { nftContract: contract, nftAddress } = useContract();
+  const { nftContract: contract, nftAddress, vaultAddress: vaultNow, vaultContract, daoAddress } = useContract();
 
-  useEffect(() => {
-    getVaultAddress();
-  }, []);
-
-  const getVaultAddress = async () => {
-    const vAddress = await contract.connect((currentProvider as any)?.provider).vaultAddress();
-    setVaultNow(vAddress);
-  };
+  const { withdrawFromVault } = useDaoVault();
 
   const setVaultTo = async () => {
     if (!currentProvider?.selectedAddress && !vault) return;
@@ -40,6 +83,16 @@ export default function Admin () {
       console.log(e);
     }
   };
+
+  // const withdrawFromVault = async () => {
+  //   if (!currentProvider?.selectedAddress || !vaultContract) return;
+  //   // withdrawNFT(tokenInfo.address, erc721Id, { from: userAddress })
+  //   try {
+  //     withdrawFromVault(1, );
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   const burn = async () => {
     try {
@@ -90,166 +143,147 @@ export default function Admin () {
     }
   };
 
+  const withdraw = async () => {
+    const daoVaultInstance = await daoInstance?.getVaultInstance();
+    const { tokenInfo } = getState().daoToken;
+    try {
+      const result = daoVaultInstance?.withdrawNFT(tokenInfo.address, withdrawID as string, { from: withdrawAddress });
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // depositNFT
+
   return (
-    <div className="bg-white shadow sm:rounded-lg p-6">
-      <div className="pb-8">
-        <h3 className="text-base font-semibold leading-6 text-gray-900">DAO Vault Address</h3>
-        <div className="mt-2 max-w-xl text-sm text-gray-500">
-          <p>
-            <b>now set to {vaultNow}</b>
-          </p>
-          <p>Change the DAO vault address you want associated with your DAO.</p>
+    <Container>
+      <div>
+        <Title>DAO Vault Address</Title>
+        <SubText>
+          <b>now set to {vaultNow}</b>
+        </SubText>
+        <SubText>Change the DAO vault address you want associated with your DAO.</SubText>
+      </div>
+      <div className="sm:flex sm:items-center mt-5">
+        <div className="w-full sm:max-w-xs">
+          <label htmlFor="address" className="sr-only">
+            Address
+          </label>
+          <Input name="address" id="address" placeholder="0x.." onChange={(e) => setVault(e?.target.value)} />
         </div>
-        <div className="mt-5 sm:flex sm:items-center">
+        <Button onClick={() => setVaultTo()}>Save</Button>
+      </div>
+      <HorizontalRule />
+      <div className="pt-6 pb-6">
+        <Button onClick={() => setTransferToTrue()}>Set Transfer to True</Button>
+      </div>
+      <HorizontalRule />
+      <div className="pt-6 pb-6">
+        <Title>DAO Address</Title>
+        <SubText>now set to {daoAddress}</SubText>
+      </div>
+      <HorizontalRule />
+      <div className="pt-6 pb-6">
+        <Title>NFT Address</Title>
+        <SubText>now set to {nftAddress}</SubText>
+      </div>
+      <HorizontalRule />
+      <div className="pt-6 pb-6">
+        <Title>Add to allow list</Title>
+        <SubText>Address: {addToAllowlistAddress?.toString()}</SubText>
+        <div className="sm:flex sm:items-center mt-5">
           <div className="w-full sm:max-w-xs">
             <label htmlFor="address" className="sr-only">
               Address
             </label>
-            <input
+            <Input
               name="address"
               id="address"
-              className="block p-5 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="0x.."
-              onChange={(e) => setVault(e?.target.value)}
-            />
-          </div>
-          <button
-            type="submit"
-            className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto"
-            onClick={() => setVaultTo()}
-          >
-            Save
-          </button>
-        </div>
-      </div>
-      <hr />
-      <div className="pt-6 pb-6">
-        <button
-          type="submit"
-          className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto"
-          onClick={() => setTransferToTrue()}
-        >
-          Set Transfer to True
-        </button>
-      </div>
-      <hr />
-      <div className="pt-6 pb-6">
-        <h3 className="text-base font-semibold leading-6 text-gray-900">DAO Address</h3>
-        <div className="mt-2 max-w-xl text-sm text-gray-500">
-          <p>now set to {'TODO'}</p>
-        </div>
-      </div>
-      <hr />
-      <div className="pt-6 pb-6">
-        <h3 className="text-base font-semibold leading-6 text-gray-900">NFT Address</h3>
-        <div className="mt-2 max-w-xl text-sm text-gray-500">
-          <p>now set to {nftAddress}</p>
-        </div>
-      </div>{' '}
-      <hr />
-      <div className="pt-6 pb-6">
-        <h3 className="text-base font-semibold leading-6 text-gray-900">Add to allow list</h3>
-        <div className="mt-2 max-w-xl text-sm text-gray-500">
-          <p> Address: {addToAllowlistAddress?.toString()}</p>
-        </div>
-        <div className="mt-5 sm:flex sm:items-center">
-          <div className="w-full sm:max-w-xs">
-            <label htmlFor="address" className="sr-only">
-              Address
-            </label>
-            <input
-              name="address"
-              id="address"
-              className="block w-full p-5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="0x.."
               onChange={(e) => setAddToAllowlistAddress(e?.target.value)}
             />
           </div>
-          <button
-            type="submit"
-            className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto"
-            onClick={() => addToVaultAddress()}
-          >
-            Add
-          </button>
+          <Button onClick={() => addToVaultAddress()}>Add</Button>
         </div>
       </div>
-      <hr />
+      <HorizontalRule />
       <div className="pt-6 pb-6">
-        <h3 className="text-base font-semibold leading-6 text-gray-900">Transfer Token to Address</h3>
-        <div className="mt-5 sm:flex sm:items-center">
+        <Title>Transfer Token to Address</Title>
+        <div className="sm:flex sm:items-center">
           <div className="w-full sm:max-w-xs">
             <label htmlFor="address">Address to transfer to</label>
-            <input
+            <Input
               name="Taddress"
               id="Taddress"
-              className="block w-full p-5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="0x.."
               onChange={(e) => setTransferTokenAddress(e?.target.value)}
             />
           </div>
           <div className="w-full sm:max-w-xs">
             <label htmlFor="address">Address to transfer from</label>
-            <input
+            <Input
               name="Faddress"
               id="Faddress"
-              className="block w-full p-5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="0x.."
               onChange={(e) => setTransferTokenAddressFrom(e?.target.value)}
             />
           </div>
           <div className="w-full sm:max-w-xs">
             <label htmlFor="address">Token ID</label>
-            <input
+            <Input
               name="id"
               id="id"
               type="number"
-              className="block w-full p-5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="0"
               onChange={(e) => setTransferTokenID(e?.target.value)}
             />
           </div>
-          <button
-            type="submit"
-            className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto"
-            onClick={() => transferToken()}
-          >
-            Transfer
-          </button>
+          <Button onClick={() => transferToken()}>Transfer</Button>
         </div>
       </div>
-      <hr />
+      <HorizontalRule />
       <div className="pt-6 pb-6">
-        <h3 className="text-base font-semibold leading-6 text-gray-900">Burn Token ID</h3>
-        <div className="mt-5 sm:flex sm:items-center">
+        <Title>Burn Token ID</Title>
+        <div className="sm:flex sm:items-center">
           <div className="w-full sm:max-w-xs">
             <label htmlFor="address" className="sr-only">
               ID
             </label>
-            <input
-              name="burnID"
-              id="burnID"
-              className="block w-full p-5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="0"
-              onChange={(e) => setBurnID(e?.target.value)}
-            />
+            <Input name="burnID" id="burnID" placeholder="0" onChange={(e) => setBurnID(e?.target.value)} />
           </div>
-          <button
-            type="submit"
-            className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto"
-            onClick={() => burn()}
-          >
-            Burn
-          </button>
+          <Button onClick={() => burn()}>Burn</Button>
         </div>
       </div>
-      <hr />
+      # <HorizontalRule />
       <div className="pt-6 pb-6">
-        <h3 className="text-base font-semibold leading-6 text-gray-900">Mint Token</h3>
-        <div className="mt-5 sm:flex sm:items-center">
+        <Title>Withdraw</Title>
+        <div className="sm:flex sm:items-center">
+          <div className="w-full sm:max-w-xs">
+            <label htmlFor="address" className="sr-only">
+              ID
+            </label>
+            <Input name="withdrawID" id="withdrawID" placeholder="0" onChange={(e) => setWithdrawId(e?.target.value)} />
+            <label htmlFor="address" className="sr-only">
+              Address
+            </label>
+            <Input
+              name="withdrawAddress"
+              id="withdrawAddress"
+              placeholder="0"
+              onChange={(e) => setWithdrawAddress(e?.target.value)}
+            />
+          </div>
+          <Button onClick={() => withdraw()}>Withdraw</Button>
+        </div>
+      </div>
+      <HorizontalRule />
+      <div className="pt-6 pb-6">
+        <Title>Mint Token</Title>
+        <div className="sm:flex sm:items-center">
           <Mint />
         </div>
       </div>
-    </div>
+    </Container>
   );
 }

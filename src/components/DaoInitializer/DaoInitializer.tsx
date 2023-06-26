@@ -1,23 +1,23 @@
-import { ReactNode, useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { ReactNode, useEffect, useState } from "react";
+import { useLocation } from "react-router";
 
-import { useWeb3Context } from 'context/Web3ContextProvider';
-import { Wrap } from 'context/Web3ContextProvider/styles';
-import { motion } from 'framer-motion';
-import { ErrorHandler, getDaoSupportedNetworks } from 'helpers';
+import { useWeb3Context } from "context/Web3ContextProvider";
+import { Wrap } from "context/Web3ContextProvider/styles";
+import { motion } from "framer-motion";
+import { ErrorHandler, getDaoSupportedNetworks } from "helpers";
 
-import useLoadDao from 'hooks/useLoadDao';
+import useLoadDao from "hooks/useLoadDao";
 
-import { useDaoStore } from 'store/dao/hooks';
-import { useProviderStore } from 'store/provider/hooks';
+import { useDaoStore } from "store/dao/hooks";
+import { useProviderStore } from "store/provider/hooks";
 
-import { PROVIDERS } from 'constants/providers';
+import { PROVIDERS } from "constants/providers";
 
 interface Props {
   children: ReactNode;
 }
 
-function DaoInitializer ({ children }: Props) {
+function DaoInitializer({ children }: Props) {
   const { pathname } = useLocation();
   const [isInfoLoaded, setIsInfoLoaded] = useState(false);
   const [isDaoAddressChecked, setIsDaoAddressChecked] = useState(false);
@@ -40,7 +40,8 @@ function DaoInitializer ({ children }: Props) {
 
   const initDaoAddress = async () => {
     try {
-      const daoAddress = '0x366B2BFCdDA4AfA86f895e22e8984b004c879367';
+      // SET DAO ADDRESS
+      const daoAddress = "0xaE9B44A4eB420BeE784b80653923eb8E668648a6";
       setIsDaoAddressChecked(false);
       const chains = await getDaoSupportedNetworks(daoAddress);
       const supportedChains = chains.filter((item) => item.isDaoExist);
@@ -87,16 +88,12 @@ function DaoInitializer ({ children }: Props) {
           animate={{ scale: 1.2 }}
           transition={{
             repeat: Infinity,
-            repeatType: 'reverse',
-            ease: 'easeOut',
+            repeatType: "reverse",
+            ease: "easeOut",
             duration: 0.5,
           }}
         >
-          <img
-            className="breathing-q__logo"
-            src="/logo.png"
-            alt="q"
-          />
+          <img className="breathing-q__logo" src="/logo.png" alt="q" />
         </motion.div>
       </Wrap>
     );

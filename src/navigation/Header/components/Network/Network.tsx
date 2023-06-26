@@ -14,15 +14,14 @@ function Network () {
   const { t } = useTranslation();
   const { initDefaultProvider } = useWeb3Context();
 
-  const isDevnet = ![
-    networkConfigsMap.mainnet.dAppUrl,
-    networkConfigsMap.testnet.dAppUrl,
-  ].includes(window.location.origin);
+  const isDevnet = ![networkConfigsMap.mainnet.dAppUrl, networkConfigsMap.testnet.dAppUrl].includes(
+    window.location.origin
+  );
 
   const networkOptions = [
     { value: 35441, label: t('MAINNET') },
     { value: 35443, label: t('TESTNET') },
-    ...(isDevnet ? [{ value: 35442, label: t('DEVNET') }] : []),
+    // ...(isDevnet ? [{ value: 35442, label: t('DEVNET') }] : []),
   ];
 
   const handleChangeNetwork = async (chainId: number) => {
@@ -39,11 +38,13 @@ function Network () {
     }
   };
 
-  return <SegmentedButton
-    value={Number(currentProvider?.chainId)}
-    options={networkOptions}
-    onChange={handleChangeNetwork}
-  />;
+  return (
+    <SegmentedButton
+      value={Number(currentProvider?.chainId)}
+      options={networkOptions}
+      onChange={handleChangeNetwork}
+    />
+  );
 }
 
 export default Network;

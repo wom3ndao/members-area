@@ -1,28 +1,29 @@
-import { lazy } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { lazy } from "react";
+import { Route, Switch } from "react-router-dom";
 
-import LazyLoading from 'components/Base/LazyLoading';
-import ErrorBoundary from 'components/Custom/ErrorBoundary';
-import Admin from 'pages/Admin';
+import LazyLoading from "components/Base/LazyLoading";
+import ErrorBoundary from "components/Custom/ErrorBoundary";
+import Admin from "pages/Admin";
+import useContracts from "hooks/useContracts";
 
-const Imprint = lazy(() => import('pages/Imprint'));
-const DataPrivacy = lazy(() => import('pages/DataPrivacy'));
-const NotFound = lazy(() => import('pages/NotFound'));
+const Imprint = lazy(() => import("pages/Imprint"));
+const DataPrivacy = lazy(() => import("pages/DataPrivacy"));
+const NotFound = lazy(() => import("pages/NotFound"));
 
-const VotingPower = lazy(() => import('pages/VotingPower'));
-const Manage = lazy(() => import('pages/Parameters'));
-const Dashboard = lazy(() => import('pages/Dashboard'));
+const VotingPower = lazy(() => import("pages/VotingPower"));
+const Manage = lazy(() => import("pages/Parameters"));
+const Dashboard = lazy(() => import("pages/Dashboard"));
 
-const Governance = lazy(() => import('pages/Governance'));
-const NewProposal = lazy(() => import('pages/Governance/NewProposal'));
-const Proposal = lazy(() => import('pages/Governance/Proposal'));
+const Governance = lazy(() => import("pages/Governance"));
+const NewProposal = lazy(() => import("pages/Governance/NewProposal"));
+const Proposal = lazy(() => import("pages/Governance/Proposal"));
 
-const MyNFT = lazy(() => import('pages/My-NFT/MyNFT'));
-const Collection = lazy(() => import('pages/Collection/Collection'));
+const MyNFT = lazy(() => import("pages/My-NFT/MyNFT"));
+const Collection = lazy(() => import("pages/Collection/Collection"));
 
-const DAO_ADDRESS = '0x366B2BFCdDA4AfA86f895e22e8984b004c879367';
+function Routes() {
+  const { daoAddress } = useContracts();
 
-function Routes () {
   return (
     <ErrorBoundary>
       <LazyLoading>
@@ -55,23 +56,23 @@ function Routes () {
             <Dashboard />
           </Route>
 
-          <Route exact path={`/${DAO_ADDRESS}/parameters/:type?`}>
+          <Route exact path={`/${daoAddress}/parameters/:type?`}>
             <Manage />
           </Route>
 
-          <Route exact path={`/${DAO_ADDRESS}/governance/:type/new`}>
+          <Route exact path={`/${daoAddress}/governance/:type/new`}>
             <NewProposal />
           </Route>
 
-          <Route exact path={`/${DAO_ADDRESS}/governance/:tab?`}>
+          <Route exact path={`/${daoAddress}/governance/:tab?`}>
             <Governance />
           </Route>
 
-          <Route exact path={`/${DAO_ADDRESS}/governance/proposal/:panel?/:id?`}>
+          <Route exact path={`/${daoAddress}/governance/proposal/:panel?/:id?`}>
             <Proposal />
           </Route>
 
-          <Route exact path={`/${DAO_ADDRESS}/voting-power`}>
+          <Route exact path={`/${daoAddress}/voting-power`}>
             <VotingPower />
           </Route>
 
