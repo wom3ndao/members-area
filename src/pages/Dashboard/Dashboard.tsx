@@ -1,22 +1,20 @@
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
-import { Button, Icon, media } from '@q-dev/q-ui-kit';
-import styled from 'styled-components';
+import { Button, Icon, media } from "@q-dev/q-ui-kit";
+import styled from "styled-components";
 
-import Mint from 'components/Mint/Mint';
-import PageLayout from 'components/PageLayout';
+import Mint from "components/Mint/Mint";
+import PageLayout from "components/PageLayout";
 
-import ConstitutionBlock from './components/ConstitutionBlock';
-import DaoTokenSupply from './components/DaoTokenSupply';
-import ExpertPanelBlock from './components/ExpertPanelBlock';
-import TotalExpertPanels from './components/TotalExpertPanels';
+import DaoTokenSupply from "./components/DaoTokenSupply";
+import ExpertPanelBlock from "./components/ExpertPanelBlock";
 
-import { useDaoStore } from 'store/dao/hooks';
-import { useDaoTokenStore } from 'store/dao-token/hooks';
-import { useExpertPanels } from 'store/expert-panels/hooks';
+import { useDaoStore } from "store/dao/hooks";
+import { useDaoTokenStore } from "store/dao-token/hooks";
+import { useExpertPanels } from "store/expert-panels/hooks";
 
-import { RoutePaths } from 'constants/routes';
+import { RoutePaths } from "constants/routes";
 
 export const StyledWrapper = styled.div`
   display: grid;
@@ -27,7 +25,7 @@ export const StyledWrapper = styled.div`
     display: grid;
     gap: 24px;
 
-    ${media.lessThan('large')} {
+    ${media.lessThan("large")} {
       gap: 16px;
     }
   }
@@ -35,7 +33,7 @@ export const StyledWrapper = styled.div`
   .dashboard__general {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 
-    ${media.lessThan('medium')} {
+    ${media.lessThan("medium")} {
       grid-template-columns: minmax(0, 1fr);
     }
   }
@@ -43,13 +41,13 @@ export const StyledWrapper = styled.div`
   .dashboard__panels {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
-    ${media.lessThan('medium')} {
+    ${media.lessThan("medium")} {
       grid-template-columns: minmax(0, 1fr);
     }
   }
 `;
 
-function Dashboard () {
+function Dashboard() {
   const { t } = useTranslation();
   const { composeDaoLink } = useDaoStore();
   const { tokenInfo } = useDaoTokenStore();
@@ -57,28 +55,25 @@ function Dashboard () {
 
   return (
     <PageLayout
-      title={t('DASHBOARD')}
+      title={t("DASHBOARD")}
       action={
         <Link to={composeDaoLink(RoutePaths.parameters)}>
           <Button block>
             <Icon name="list" />
-            <span>{t('PARAMETERS')}</span>
+            <span>{t("PARAMETERS")}</span>
           </Button>
         </Link>
       }
     >
       <StyledWrapper>
-        <div className="dashboard__panels">
+        <div>
           <Mint />
         </div>
 
         <div className="dashboard__general">
-          <ConstitutionBlock />
+          {/* <ConstitutionBlock /> */}
           {tokenInfo && <DaoTokenSupply />}
-          <TotalExpertPanels />
-        </div>
-
-        <div className="dashboard__panels">
+          {/* <TotalExpertPanels /> */}
           {expertPanels.map((panel, index) => (
             <ExpertPanelBlock key={index} name={panel} />
           ))}

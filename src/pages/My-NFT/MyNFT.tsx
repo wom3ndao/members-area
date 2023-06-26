@@ -1,12 +1,10 @@
 import { StyledWrapper } from "components/Mint/Mint";
 import PageLayout from "components/PageLayout";
-
 import useNfts, { Token } from "hooks/useNfts";
 
 function MyNFT() {
   const { nfts, hasMinted, hasInVault, vaultNfts } = useNfts(false);
-  // const { nftsInVault, hasNFTinVault } = useVault();
-  console.log(nfts, vaultNfts);
+  console.log(nfts, hasMinted, vaultNfts, hasInVault);
 
   return (
     <PageLayout title={"Mein wom3n.DAO NFT"}>
@@ -17,7 +15,9 @@ function MyNFT() {
       )}
       {hasMinted && (
         <StyledWrapper className="block">
-          <div className="expert-panel-block__header block__header">in deiner Wallet</div>
+          <div className="expert-panel-block__header block__header">
+            Diesen NFT hast du gemintet, aber noch nicht für das Voting in der wom3n.DAO freigegeben.
+          </div>
 
           <div className="block__content">
             {nfts?.map((nft: Token) => (
@@ -36,7 +36,9 @@ function MyNFT() {
       )}
       {hasInVault && (
         <StyledWrapper className="block">
-          <div className="expert-panel-block__header block__header">in deiner DAO</div>
+          <div className="expert-panel-block__header block__header">
+            Du hast diesen von dir geminteten NFT für das Voting in der wom3n.DAO freigegeben.
+          </div>
 
           <div className="block__content">
             {vaultNfts?.map((nft: any) => (

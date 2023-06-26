@@ -65,11 +65,10 @@ export default function Admin() {
   const [transferTokenAddressFrom, setTransferTokenAddressFrom] = useState<string>();
   const [withdrawID, setWithdrawId] = useState<string>();
   const [withdrawAddress, setWithdrawAddress] = useState<string>();
+  const [isMinting, setMinting] = useState(false);
 
   const [burnID, setBurnID] = useState<string>();
   const { nftContract: contract, nftAddress, vaultAddress: vaultNow, vaultContract, daoAddress } = useContract();
-
-  const { withdrawFromVault } = useDaoVault();
 
   const setVaultTo = async () => {
     if (!currentProvider?.selectedAddress && !vault) return;
@@ -147,15 +146,28 @@ export default function Admin() {
     const daoVaultInstance = await daoInstance?.getVaultInstance();
     const { tokenInfo } = getState().daoToken;
     try {
-      const result = daoVaultInstance?.withdrawNFT(tokenInfo.address, withdrawID as string, { from: withdrawAddress });
+      const result = daoVaultInstance?.withdrawNFT(tokenInfo.address, withdrawID as string);
       console.log(result);
     } catch (e) {
       console.log(e);
     }
   };
 
-  // depositNFT
-
+  const mint = async () => {
+    if (!currentProvider?.selectedAddress) return;
+    try {
+      setMinting(true);
+      const tx = await contract.connect(currentProvider?.signer as Signer).mint({
+        gasLimit: 1000000,
+      });
+      const result = await tx.wait();
+      console.log(result);
+      setMinting(false);
+    } catch (e) {
+      console.log(e);
+      setMinting(false);
+    }
+  };
   return (
     <Container>
       <div>
@@ -281,7 +293,9 @@ export default function Admin() {
       <div className="pt-6 pb-6">
         <Title>Mint Token</Title>
         <div className="sm:flex sm:items-center">
-          <Mint />
+          <Button onClick={() => mint()}>
+            {isMinting ? "Minting .. Please wait.." : "Jetzt Minten und Membership sichern!"}
+          </Button>
         </div>
       </div>
     </Container>

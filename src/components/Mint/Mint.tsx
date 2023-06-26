@@ -38,7 +38,7 @@ function Mint() {
   const { currentProvider } = useProviderStore();
   const { nftContract: contract } = useContract();
   const [isMinting, setMinting] = useState(false);
-  const { hasMinted } = useNfts(isMinting);
+  const { hasMintedOrInVault } = useNfts(isMinting);
   const [isAllowed, setIsAllowed] = useState();
   useEffect(() => {
     getIsAllowed();
@@ -70,19 +70,33 @@ function Mint() {
   return (
     <StyledWrapper className="block">
       <div className="expert-panel-block__header block__header">
-        <h3 className="text-h3">
-          {currentProvider?.selectedAddress && hasMinted ? "Willkommen in deiner wom3n.DAO!" : "Membership NFT"}
-        </h3>
+        <h3 className="text-h3">Willkommen in der wom3n.DAO MEMBERS AREA!</h3>
+        <p>
+          <b>
+            Hier ist der Ort, an dem sich die Mitglieder der wom3n.DAO organisieren. Falls du berechtigt bist, kannst du
+            hier einen offiziellen wom3n.DAO NFT minten und danach für das die DAO-Governance approven. Für alle
+            Mitglieder steht der Bereich der Votings offen. Hier treffen wir blockchain-basiert DAO-interne
+            Entscheidungen. Du kannst dir außerdem unsere aktuelle NFT-Collection ansehen.
+          </b>
+        </p>
       </div>
 
       <div className="block__content">
         {!currentProvider?.selectedAddress && (
-          <p>Bitte verbinde zuerst deine Wallet (oben rechts), damit wir prüfen können, ob du bereits Member bist.</p>
+          <p>
+            <em>
+              Bitte verbinde zuerst deine Wallet (oben rechts), damit wir prüfen können, ob du bereits Member bist.
+            </em>
+          </p>
         )}
 
-        {currentProvider?.selectedAddress && isAllowed && !hasMinted && <p>Deine Wallet steht auf der Allowlist!</p>}
+        {currentProvider?.selectedAddress && isAllowed && !hasMintedOrInVault && (
+          <p>
+            <em>Deine Wallet steht auf der Allowlist!</em>
+          </p>
+        )}
 
-        {currentProvider?.selectedAddress && !isAllowed && !hasMinted && (
+        {currentProvider?.selectedAddress && !isAllowed && !hasMintedOrInVault && (
           <>
             <p>Du bist leider nicht berechtigt, ein wom3n.DAO NFT zu minten.</p>
             <p className="text-sm font-light">
@@ -95,12 +109,19 @@ function Mint() {
           </>
         )}
 
-        {currentProvider?.selectedAddress && isAllowed && !hasMinted && (
-          <Button onClick={() => mint()}>
-            {isMinting ? "Minting .. Please wait.." : "Jetzt Minten und Membership sichern!"}
-          </Button>
+        {currentProvider?.selectedAddress && isAllowed && !hasMintedOrInVault && (
+          <>
+            <br />
+            <Button onClick={() => mint()}>
+              {isMinting ? "Minting .. Please wait.." : "Jetzt Minten und Membership sichern!"}
+            </Button>
+          </>
         )}
-        {currentProvider?.selectedAddress && hasMinted && <p>(Du bist bereits Mitglied! :))</p>}
+        {currentProvider?.selectedAddress && hasMintedOrInVault && (
+          <p>
+            <em>Du bist bereits Mitglied!</em>
+          </p>
+        )}
       </div>
     </StyledWrapper>
   );

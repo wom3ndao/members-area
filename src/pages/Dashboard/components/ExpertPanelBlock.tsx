@@ -1,13 +1,12 @@
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Spinner } from "@q-dev/q-ui-kit";
+import styled from "styled-components";
 
-import { Spinner } from '@q-dev/q-ui-kit';
-import styled from 'styled-components';
+import ExplorerAddress from "components/Custom/ExplorerAddress";
 
-import ExplorerAddress from 'components/Custom/ExplorerAddress';
-
-import { useExpertPanels } from 'store/expert-panels/hooks';
+import { useExpertPanels } from "store/expert-panels/hooks";
 
 const StyledWrapper = styled.div`
   .expert-panel-block__header {
@@ -36,7 +35,7 @@ interface Props {
   name: string;
 }
 
-function ExpertPanelBlock ({ name }: Props) {
+function ExpertPanelBlock({ name }: Props) {
   const { t } = useTranslation();
   const { getPanelMembers } = useExpertPanels();
 
@@ -47,7 +46,7 @@ function ExpertPanelBlock ({ name }: Props) {
     loadPanelMembers();
   }, [name]);
 
-  async function loadPanelMembers () {
+  async function loadPanelMembers() {
     setLoading(true);
     const members = await getPanelMembers(name);
     setMembers(members);
@@ -57,36 +56,25 @@ function ExpertPanelBlock ({ name }: Props) {
   return (
     <StyledWrapper className="block">
       <div className="expert-panel-block__header block__header">
-        <h3 className="text-h3">
-          {t('EXPERT_PANEL_MEMBERS', { panel: name })}
-        </h3>
+        <h3 className="text-h3">{"Governors Panel"}</h3>
       </div>
 
       <div className="block__content">
-        {loading
-          ? (
-            <div className="expert-panel-block__loading-wrp">
-              <Spinner size={96} thickness={4} />
-            </div>
-          )
-          : members.length > 0
-            ? (
-              <div className="expert-panel-block__list">
-                {members.map((address) => (
-                  <div key={address} className="expert-panel-block__list-item">
-                    <ExplorerAddress
-                      semibold
-                      iconed
-                      className="text-md"
-                      address={address}
-                      iconSize={16}
-                    />
-                  </div>
-                ))}
+        {loading ? (
+          <div className="expert-panel-block__loading-wrp">
+            <Spinner size={96} thickness={4} />
+          </div>
+        ) : members.length > 0 ? (
+          <div className="expert-panel-block__list">
+            {members.map((address) => (
+              <div key={address} className="expert-panel-block__list-item">
+                <ExplorerAddress semibold iconed className="text-md" address={address} iconSize={16} />
               </div>
-            )
-            : <p className="text-sm">{t('NO_MEMBERS')}</p>
-        }
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm">{t("NO_MEMBERS")}</p>
+        )}
       </div>
     </StyledWrapper>
   );

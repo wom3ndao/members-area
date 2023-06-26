@@ -7,9 +7,6 @@ import { useProviderStore } from "store/provider/hooks";
 
 import { networkConfigsMap } from "constants/config";
 
-const VAULT_ADDRESS_Q_MAINNET = "";
-const NFT_MEMBERSHIP_ADDRESS_Q_MAINNET = "";
-const NFT_MEMBERSHIP_ADDRESS_Q_TESTNET = "0xfd54e33066311feb3Dc4aE54C007cef45D14484A";
 const nftAbi = [
   {
     inputs: [],
@@ -841,10 +838,9 @@ const isDevnet = ![networkConfigsMap.mainnet.dAppUrl, networkConfigsMap.testnet.
 );
 
 const useContracts = () => {
-  const nftContract = new ethers.Contract(
-    isDevnet ? NFT_MEMBERSHIP_ADDRESS_Q_TESTNET : NFT_MEMBERSHIP_ADDRESS_Q_MAINNET,
-    nftAbi
-  );
+  const { tokenInfo } = getState().daoToken;
+  console.log({ tokenInfo });
+  const nftContract = new ethers.Contract(tokenInfo.address, nftAbi);
 
   const { daoAddress } = getState().dao;
   const { currentProvider } = useProviderStore();
@@ -868,7 +864,7 @@ const useContracts = () => {
 
   return {
     nftContract: nftContract,
-    nftAddress: isDevnet ? NFT_MEMBERSHIP_ADDRESS_Q_TESTNET : NFT_MEMBERSHIP_ADDRESS_Q_MAINNET,
+    nftAddress: tokenInfo.address,
     nftAbi: nftAbi,
     daoAddress: daoAddress,
     vaultAddress: vaultAddressNow,

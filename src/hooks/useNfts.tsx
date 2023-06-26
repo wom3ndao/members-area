@@ -19,8 +19,14 @@ const useNfts = (isMinting: boolean) => {
   const { currentProvider } = useProviderStore();
   const { walletNftsList, withdrawalNftsList } = useDaoVault();
 
-  const hasMinted = useMemo(() => nfts?.length > 0, [nfts, currentProvider?.selectedAddress, isMinting]);
-  const hasInVault = useMemo(() => vaultNfts?.length > 0, [nfts, currentProvider?.selectedAddress]);
+  const hasMinted = useMemo(
+    () => nfts?.length > 0,
+    [nfts, walletNftsList, currentProvider?.selectedAddress, isMinting]
+  );
+  const hasInVault = useMemo(
+    () => vaultNfts?.length > 0,
+    [vaultNfts, withdrawalNftsList, currentProvider?.selectedAddress]
+  );
 
   useEffect(() => {
     listTokensOfOwner();
@@ -41,13 +47,14 @@ const useNfts = (isMinting: boolean) => {
 
   async function mapUsersVaultNfts() {
     if (!currentProvider) return [];
-    const promises = vaultNfts?.map(async (id: any) => {
+    const promises = withdrawalNftsList?.map(async (id: any) => {
       const uri = await contract.connect(currentProvider?.provider as any).tokenURI(id.toString());
       const response = await fetch(uri);
       const json = await response.json();
       return { ...json, id: id.toString() };
     });
     const nfts = promises?.length && (await Promise?.all(promises));
+    console.log(nfts);
     return nfts;
   }
 
@@ -71,9 +78,10 @@ const useNfts = (isMinting: boolean) => {
 
   return {
     nfts: nfts,
-    vaultNfts: withdrawalNftsList,
+    vaultNfts: vaultNfts,
     hasMinted: hasMinted,
     hasInVault: hasInVault,
+    hasMintedOrInVault: hasInVault || hasMinted,
   };
 };
 
