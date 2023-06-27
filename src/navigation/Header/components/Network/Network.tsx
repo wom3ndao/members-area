@@ -1,26 +1,26 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
-import { SegmentedButton } from '@q-dev/q-ui-kit';
-import { useWeb3Context } from 'context/Web3ContextProvider';
-import { ErrorHandler } from 'helpers';
+import { SegmentedButton } from "@q-dev/q-ui-kit";
+import { useWeb3Context } from "context/Web3ContextProvider";
+import { ErrorHandler } from "helpers";
 
-import { useProviderStore } from 'store/provider/hooks';
+import { useProviderStore } from "store/provider/hooks";
 
-import { connectorParametersMap, networkConfigsMap } from 'constants/config';
-import { PROVIDERS } from 'constants/providers';
+import { connectorParametersMap } from "constants/config";
+import { PROVIDERS } from "constants/providers";
 
-function Network () {
+function Network() {
   const { currentProvider } = useProviderStore();
   const { t } = useTranslation();
   const { initDefaultProvider } = useWeb3Context();
 
-  const isDevnet = ![networkConfigsMap.mainnet.dAppUrl, networkConfigsMap.testnet.dAppUrl].includes(
-    window.location.origin
-  );
+  // const isDevnet = ![networkConfigsMap.mainnet.dAppUrl, networkConfigsMap.testnet.dAppUrl].includes(
+  //   window.location.origin
+  // );
 
   const networkOptions = [
-    { value: 35441, label: t('MAINNET') },
-    { value: 35443, label: t('TESTNET') },
+    { value: 35441, label: t("MAINNET") },
+    { value: 35443, label: t("TESTNET") },
     // ...(isDevnet ? [{ value: 35442, label: t('DEVNET') }] : []),
   ];
 
@@ -39,11 +39,7 @@ function Network () {
   };
 
   return (
-    <SegmentedButton
-      value={Number(currentProvider?.chainId)}
-      options={networkOptions}
-      onChange={handleChangeNetwork}
-    />
+    <SegmentedButton value={Number(currentProvider?.chainId)} options={networkOptions} onChange={handleChangeNetwork} />
   );
 }
 

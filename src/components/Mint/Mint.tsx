@@ -10,6 +10,16 @@ import useNfts from "hooks/useNfts";
 
 import { useProviderStore } from "store/provider/hooks";
 
+const AlertCard = styled.div`
+  padding: 20px;
+  border: 1px solid #f8d7da;
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+`;
+
 export const StyledWrapper = styled.div`
   .expert-panel-block__header {
     margin-right: -8px;
@@ -40,6 +50,7 @@ function Mint() {
   const [isMinting, setMinting] = useState(false);
   const { hasMintedOrInVault } = useNfts(isMinting);
   const [isAllowed, setIsAllowed] = useState();
+
   useEffect(() => {
     getIsAllowed();
   }, [currentProvider?.selectedAddress]);
@@ -123,6 +134,12 @@ function Mint() {
           </p>
         )}
       </div>
+      <br />
+      {currentProvider?.chainId === 35443 && (
+        <AlertCard>
+          <p>Bitte beachte, dass du dich in der TESTNET-Version der wom3n.DAO befindest. Hier ist unsere Spielwiese!</p>
+        </AlertCard>
+      )}
     </StyledWrapper>
   );
 }

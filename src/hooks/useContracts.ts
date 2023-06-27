@@ -5,8 +5,6 @@ import { Contract, ethers } from "ethers";
 import { getState } from "store";
 import { useProviderStore } from "store/provider/hooks";
 
-import { networkConfigsMap } from "constants/config";
-
 const nftAbi = [
   {
     inputs: [],
@@ -359,6 +357,38 @@ const nftAbi = [
     name: "mint",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+    ],
+    name: "mintID",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "mintedTokens",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -803,7 +833,6 @@ const nftAbi = [
     type: "function",
   },
 ];
-
 const vaultAbi = [
   {
     constant: true,
@@ -833,14 +862,9 @@ export interface Token {
   id: number | string;
 }
 
-const isDevnet = ![networkConfigsMap.mainnet.dAppUrl, networkConfigsMap.testnet.dAppUrl].includes(
-  window.location.origin
-);
-
 const useContracts = () => {
   const { tokenInfo } = getState().daoToken;
-  console.log({ tokenInfo });
-  const nftContract = new ethers.Contract(tokenInfo.address, nftAbi);
+  const nftContract = new ethers.Contract(tokenInfo?.address, nftAbi);
 
   const { daoAddress } = getState().dao;
   const { currentProvider } = useProviderStore();

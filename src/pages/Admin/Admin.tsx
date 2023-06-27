@@ -66,6 +66,7 @@ export default function Admin() {
   const [withdrawID, setWithdrawId] = useState<string>();
   const [withdrawAddress, setWithdrawAddress] = useState<string>();
   const [isMinting, setMinting] = useState(false);
+  const [mintID, setMintID] = useState<string>();
 
   const [burnID, setBurnID] = useState<string>();
   const { nftContract: contract, nftAddress, vaultAddress: vaultNow, vaultContract, daoAddress } = useContract();
@@ -158,6 +159,22 @@ export default function Admin() {
     try {
       setMinting(true);
       const tx = await contract.connect(currentProvider?.signer as Signer).mint({
+        gasLimit: 1000000,
+      });
+      const result = await tx.wait();
+      console.log(result);
+      setMinting(false);
+    } catch (e) {
+      console.log(e);
+      setMinting(false);
+    }
+  };
+
+  const mintById = async () => {
+    if (!currentProvider?.selectedAddress) return;
+    try {
+      setMinting(true);
+      const tx = await contract.connect(currentProvider?.signer as Signer).mintID(mintID, {
         gasLimit: 1000000,
       });
       const result = await tx.wait();
@@ -267,7 +284,7 @@ export default function Admin() {
           <Button onClick={() => burn()}>Burn</Button>
         </div>
       </div>
-      # <HorizontalRule />
+      <HorizontalRule />
       <div className="pt-6 pb-6">
         <Title>Withdraw</Title>
         <div className="sm:flex sm:items-center">
@@ -294,6 +311,21 @@ export default function Admin() {
         <Title>Mint Token</Title>
         <div className="sm:flex sm:items-center">
           <Button onClick={() => mint()}>
+            {isMinting ? "Minting .. Please wait.." : "Jetzt Minten und Membership sichern!"}
+          </Button>
+        </div>
+      </div>
+      <HorizontalRule />
+      <div className="pt-6 pb-6">
+        <Title>Mint Token by ID</Title>
+        <div className="sm:flex sm:items-center">
+          <div className="w-full sm:max-w-xs">
+            <label htmlFor="mintId" className="sr-only">
+              ID
+            </label>
+            <Input name="mintID" id="mintID" placeholder="1" onChange={(e) => setMintID(e?.target.value)} />
+          </div>
+          <Button onClick={() => mintById()}>
             {isMinting ? "Minting .. Please wait.." : "Jetzt Minten und Membership sichern!"}
           </Button>
         </div>

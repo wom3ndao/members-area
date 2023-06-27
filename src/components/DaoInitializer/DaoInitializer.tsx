@@ -41,7 +41,12 @@ function DaoInitializer({ children }: Props) {
   const initDaoAddress = async () => {
     try {
       // SET DAO ADDRESS
-      const daoAddress = "0xaE9B44A4eB420BeE784b80653923eb8E668648a6";
+      const daoAddress =
+        currentProvider?.chainId === 35443 // TEST
+          ? "0x20345B6b458Ef96878668AF8bE51dc3abD41FC92"
+          : currentProvider?.chainId === 35441 // MAIN
+          ? "0x7291ad61261693e312D9AffecC2429f5eE288262"
+          : "";
       setIsDaoAddressChecked(false);
       const chains = await getDaoSupportedNetworks(daoAddress);
       const supportedChains = chains.filter((item) => item.isDaoExist);
@@ -78,7 +83,7 @@ function DaoInitializer({ children }: Props) {
 
   useEffect(() => {
     initDaoAddress();
-  }, [pathname]);
+  }, [pathname, currentProvider?.chainId]);
 
   if (!isWeb3Loaded || !isInfoLoaded || !storeProvider?.provider || !isDaoAddressChecked) {
     return (
