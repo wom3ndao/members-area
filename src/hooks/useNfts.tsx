@@ -36,7 +36,7 @@ const useNfts = (isMinting: boolean) => {
   async function mapUsersNfts() {
     if (!currentProvider) return [];
     const promises = walletNftsList?.map(async (id: any) => {
-      const uri = await contract.connect(currentProvider?.provider as any).tokenURI(id.toString());
+      const uri = await contract?.connect(currentProvider?.provider as any).tokenURI(id.toString());
       const response = await fetch(uri);
       const json = await response.json();
       return { ...json, id: id.toString() };
@@ -48,7 +48,7 @@ const useNfts = (isMinting: boolean) => {
   async function mapUsersVaultNfts() {
     if (!currentProvider) return [];
     const promises = withdrawalNftsList?.map(async (id: any) => {
-      const uri = await contract.connect(currentProvider?.provider as any).tokenURI(id.toString());
+      const uri = await contract?.connect(currentProvider?.provider as any).tokenURI(id.toString());
       const response = await fetch(uri);
       const json = await response.json();
       return { ...json, id: id.toString() };

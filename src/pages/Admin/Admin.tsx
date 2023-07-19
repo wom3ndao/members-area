@@ -74,7 +74,7 @@ export default function Admin() {
   const setVaultTo = async () => {
     if (!currentProvider?.selectedAddress && !vault) return;
     try {
-      const tx = await contract.connect(currentProvider?.signer as Signer).setVaultAddress(vault, {
+      const tx = await contract?.connect(currentProvider?.signer as Signer).setVaultAddress(vault, {
         gasLimit: 300000,
       });
       const result = await tx.wait();
@@ -96,7 +96,7 @@ export default function Admin() {
 
   const burn = async () => {
     try {
-      const tx = await contract.connect(currentProvider?.signer as Signer).burn(burnID);
+      const tx = await contract?.connect(currentProvider?.signer as Signer).burn(burnID);
       const result = await tx.wait();
       console.log(result);
     } catch (e) {
@@ -107,7 +107,7 @@ export default function Admin() {
   const addToVaultAddress = async () => {
     if (!currentProvider?.selectedAddress && !addToAllowlistAddress) return;
     try {
-      const tx = await contract.connect(currentProvider?.signer as Signer).addToAllowlist([addToAllowlistAddress], {
+      const tx = await contract?.connect(currentProvider?.signer as Signer).addToAllowlist([addToAllowlistAddress], {
         gasLimit: 300000,
       });
       const result = await tx.wait();
@@ -120,7 +120,7 @@ export default function Admin() {
   const transferToken = async () => {
     try {
       const tx = await contract
-        .connect(currentProvider?.signer as Signer)
+        ?.connect(currentProvider?.signer as Signer)
         .transferToken(transferTokenAddressFrom, transferTokenAddress, transferTokenID, {
           gasLimit: 300000,
         });
@@ -133,7 +133,7 @@ export default function Admin() {
 
   const setTransferToTrue = async () => {
     try {
-      const tx = await contract.connect(currentProvider?.signer as Signer).setTransferAllowed(true, {
+      const tx = await contract?.connect(currentProvider?.signer as Signer).setTransferAllowed(true, {
         gasLimit: 300000,
       });
       const result = await tx.wait();
@@ -158,7 +158,7 @@ export default function Admin() {
     if (!currentProvider?.selectedAddress) return;
     try {
       setMinting(true);
-      const tx = await contract.connect(currentProvider?.signer as Signer).mint({
+      const tx = await contract?.connect(currentProvider?.signer as Signer).mint({
         gasLimit: 1000000,
       });
       const result = await tx.wait();
@@ -174,7 +174,7 @@ export default function Admin() {
     if (!currentProvider?.selectedAddress) return;
     try {
       setMinting(true);
-      const tx = await contract.connect(currentProvider?.signer as Signer).mintID(mintID, {
+      const tx = await contract?.connect(currentProvider?.signer as Signer).mintID(mintID, {
         gasLimit: 1000000,
       });
       const result = await tx.wait();

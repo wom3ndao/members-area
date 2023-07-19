@@ -864,12 +864,11 @@ export interface Token {
 
 const useContracts = () => {
   const { tokenInfo } = getState().daoToken;
-  const nftContract = new ethers.Contract(tokenInfo?.address, nftAbi);
-
   const { daoAddress } = getState().dao;
   const { currentProvider } = useProviderStore();
   const [vaultAddressNow, setVaultNow] = useState<string>();
   const [vaultContract, setVaultContract] = useState<Contract>();
+  const [nftContract, setNftContract] = useState<Contract>();
 
   useEffect(() => {
     if (!vaultAddressNow) return;
@@ -878,17 +877,25 @@ const useContracts = () => {
   }, [vaultAddressNow]);
 
   useEffect(() => {
-    getVaultAddress();
-  }, []);
+    if (!vaultAddressNow) getVaultAddress();
+    if (!nftContract) getNFTContract();
+  }, [currentProvider, nftContract, tokenInfo]);
+
+  const getNFTContract = async () => {
+    if (!tokenInfo?.address) return;
+    const nftContract = new ethers.Contract(tokenInfo?.address, nftAbi);
+    setNftContract(nftContract);
+  };
 
   const getVaultAddress = async () => {
-    const vAddress = await nftContract.connect((currentProvider as any)?.provider).vaultAddress();
+    if (!nftContract) return;
+    const vAddress = await nftContract?.connect((currentProvider as any)?.provider)?.vaultAddress();
     setVaultNow(vAddress);
   };
 
   return {
     nftContract: nftContract,
-    nftAddress: tokenInfo.address,
+    nftAddress: tokenInfo?.address,
     nftAbi: nftAbi,
     daoAddress: daoAddress,
     vaultAddress: vaultAddressNow,

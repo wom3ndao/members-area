@@ -57,7 +57,7 @@ function Mint() {
 
   const getIsAllowed = async () => {
     const isAllowed = await contract
-      .connect(currentProvider?.provider as any)
+      ?.connect(currentProvider?.provider as any)
       .allowlist(currentProvider?.selectedAddress);
     setIsAllowed(isAllowed);
   };
@@ -66,7 +66,7 @@ function Mint() {
     if (!currentProvider?.selectedAddress) return;
     try {
       setMinting(true);
-      const tx = await contract.connect(currentProvider?.signer as Signer).mint({
+      const tx = await contract?.connect(currentProvider?.signer as Signer).mint({
         gasLimit: 1000000,
       });
       const result = await tx.wait();

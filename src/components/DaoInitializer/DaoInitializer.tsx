@@ -45,7 +45,7 @@ function DaoInitializer({ children }: Props) {
         currentProvider?.chainId === 35443 // TEST
           ? "0x20345B6b458Ef96878668AF8bE51dc3abD41FC92"
           : currentProvider?.chainId === 35441 // MAIN
-          ? "0x7291ad61261693e312D9AffecC2429f5eE288262"
+          ? "0x7291ad61261693e312d9affecc2429f5ee288262"
           : "";
       setIsDaoAddressChecked(false);
       const chains = await getDaoSupportedNetworks(daoAddress);
